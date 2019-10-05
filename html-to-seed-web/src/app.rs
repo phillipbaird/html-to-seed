@@ -52,14 +52,14 @@ pub fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
         Msg::HtmlChanged(html) => {
             model.html = html;
             model.rust = html_to_seed(&model.html, model.use_typed_classes);
-        }
+        },
         Msg::CopyToClipboard => {
             copy_to_clipboard();
-        }
+        },
         Msg::ToggleUseTypedClasses => {
             model.use_typed_classes = !model.use_typed_classes;
             model.rust = html_to_seed(&model.html, model.use_typed_classes);
-        }
+        },
     }
 }
 
