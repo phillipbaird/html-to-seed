@@ -30,10 +30,10 @@ impl Default for Model {
 //     Init
 // ------ ------
 
-pub fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
+pub fn init(_: Url, _: &mut impl Orders<Msg>) -> Init<Model> {
     let mut model = Model::default();
     model.is_copy_supported = html_document().query_command_supported("copy");
-    model
+    Init::new(model)
 }
 
 // ------ ------
@@ -52,14 +52,14 @@ pub fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
         Msg::HtmlChanged(html) => {
             model.html = html;
             model.rust = html_to_seed(&model.html, model.use_typed_classes);
-        },
+        }
         Msg::CopyToClipboard => {
             copy_to_clipboard();
-        },
+        }
         Msg::ToggleUseTypedClasses => {
             model.use_typed_classes = !model.use_typed_classes;
             model.rust = html_to_seed(&model.html, model.use_typed_classes);
-        },
+        }
     }
 }
 
@@ -202,7 +202,7 @@ fn github_button() -> Node<Msg> {
             C.text_xs,
         ],
         attrs! {
-            At::Href => "http://github.com",
+            At::Href => "http://github.com/phillipbaird/html-to-seed",
             At::Target => "_blank",
             At::Rel => "noreferrer",
         },
