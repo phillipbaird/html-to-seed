@@ -1,0 +1,14 @@
+[package]
+name = "html-to-seed-lib"
+description = "Library to convert from Html to Rust + Seed code."
+# repository = "https://github.com/phillipbaird/html-to-seed"
+authors = ["Phillip Baird <phillip.baird@gmail.com>"]
+categories = ["rust", "tailwindcss", "seed"]
+license = "MIT"
+edition = "2018"
+version = "0.1.0"
+
+[dependencies]
+
+html5ever = "^0.24.1"
+lazy_static = "^1.4.0"

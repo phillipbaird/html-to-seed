@@ -1,6 +1,13 @@
 MIT License
 
+Html-to-Seed 'phillipbaird/html-to-seed':
 Copyright (c) 2019 Phillip Baird
+
+Html-to-Seed is based on Seed Quickstart with Webpack 'MartinKavik/seed-quickstart-webpack':
+Copyright (c) 2019 Martin Kavík
+
+Seed Quickstart is based on 'rustwasm/rust-webpack-template':
+Copyright (c) 2015 The Rust Project Developers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
