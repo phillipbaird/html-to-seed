@@ -1,4 +1,6 @@
 # html-to-seed
+[![Build Status](https://travis-ci.org/phillipbaird/html-to-seed.svg?branch=master)](https://travis-ci.org/phillipbaird/html-to-seed) [![Netlify Status](https://api.netlify.com/api/v1/badges/2c65e870-70db-4ce9-a562-614589831a75/deploy-status)](https://app.netlify.com/sites/html-to-seed/deploys)
+
 Tool for converting Html to [Rust](https://www.rust-lang.org/) for use with the [Seed](https://seed-rs.org/) web framework
 Seed can be used to build web applications in WebAssembly inspired by [Elm](https://elm-lang.org/)).
 
@@ -6,7 +8,7 @@ Use html-to-seed to:
 - converting an existing HTML UI to a [Seed](https://seed-rs.org/) based application.
 - check your UI layout in Html before committing to building an application, then generate the view code with little to no effort.
 
-Try it [here](https://github.com).
+Try it [here](https://html-to-seed.netlify.com).
 
 ---
 
