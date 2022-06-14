@@ -1,5 +1,5 @@
 # html-to-seed
-![build](https://github.com/phillipbaird/html-to-seed/actions/workflows/build/badge.svg) [![Netlify Status](https://api.netlify.com/api/v1/badges/2c65e870-70db-4ce9-a562-614589831a75/deploy-status)](https://app.netlify.com/sites/html-to-seed/deploys)
+![Build status](https://github.com/phillipbaird/html-to-seed/actions/workflows/build.yml/badge.svg) [![Netlify Status](https://api.netlify.com/api/v1/badges/2c65e870-70db-4ce9-a562-614589831a75/deploy-status)](https://app.netlify.com/sites/html-to-seed/deploys)
 
 Tool for converting Html to [Rust](https://www.rust-lang.org/) for use with the [Seed](https://seed-rs.org/) web framework
 Seed can be used to build web applications in WebAssembly inspired by [Elm](https://elm-lang.org/).
