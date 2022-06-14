@@ -15,11 +15,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 14
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: "14"
-      - name: Use latest stable release
+          node-version: "18"
+      - name: Use latest Rust stable release
         run: rustup update stable
       - name: Add support for WASM to rust toolchain.
         run: rustup target add wasm32-unknown-unknown
@@ -29,13 +29,12 @@ jobs:
         run: cargo build --release
       - name: Run tests
         run: cargo test --verbose
-      - name: Build WebApp
+      - name: Build WebApp and Deploy
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
           cd html-to-seed-web
           npm ci
           trunk build --release
-      - name: Deploy Site
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: npx netlify deploy --dir=../dist --prod
+          npx --package=netlify-cli --yes -- netlify deploy --dir=../dist --prod

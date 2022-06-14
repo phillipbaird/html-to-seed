@@ -7,7 +7,7 @@ categories = ["wasm", "rust", "tailwindcss", "seed"]
 license = "MIT"
 readme = "./README.md"
 edition = "2018"
-version = "0.1.0"
+version = "0.2.0"
 
 [dependencies]
 seed = "0.8"
