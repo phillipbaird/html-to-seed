@@ -5,10 +5,4 @@ dist
 target
 node_modules
 
-html-to-seed-web/bin
-html-to-seed-web/pkg
-html-to-seed-web/target
-html-to-seed-web/wasm-pack.log
-html-to-seed-web/src/generated/**
-!html-to-seed-web/src/generated/mod.rs
 !**/.keep

@@ -154,7 +154,7 @@ fn walk_element(
 
         if !class_strs.is_empty() {
             // Open class macro.
-            buffer.push_str(&format!("{}class![", indent_1));
+            buffer.push_str(&format!("{}C![", indent_1));
             if multiple_classes {
                 buffer.push(NEW_LINE)
             }
@@ -267,14 +267,14 @@ mod tests {
                 r#"<div><div class="flex flex-col"></div></div>"#,
                 true
             )),
-            r#"div![div![class![C.flex,C.flex_col,],],],"#
+            r#"div![div![C![C.flex,C.flex_col,],],],"#
         );
         assert_eq!(
             remove_whitespace(&html_to_seed(
                 r#"<div><div id="myid" class="flex flex-col"></div></div>"#,
                 true
             )),
-            r#"div![div![class![C.flex,C.flex_col,],attrs!{At::Id=>"myid",},],],"#
+            r#"div![div![C![C.flex,C.flex_col,],attrs!{At::Id=>"myid",},],],"#
         );
     }
 

@@ -1,12 +1,8 @@
-use crate::{generated::css_classes::C, samples};
+mod samples;
 use html_to_seed_lib::html_to_seed;
 use seed::{prelude::*, *};
 use wasm_bindgen::JsCast;
 use web_sys::{Document, HtmlDocument, HtmlTextAreaElement};
-
-// ------ ------
-//     Model
-// ------ ------
 
 pub struct Model {
     html: String,
@@ -30,10 +26,10 @@ impl Default for Model {
 //     Init
 // ------ ------
 
-pub fn init(_: Url, _: &mut impl Orders<Msg>) -> Init<Model> {
+pub fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
     let mut model = Model::default();
     model.is_copy_supported = html_document().query_command_supported("copy");
-    Init::new(model)
+    model
 }
 
 // ------ ------
@@ -67,94 +63,57 @@ pub fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
 //     View
 // ------ ------
 
-pub fn view(model: &Model) -> impl View<Msg> {
+pub fn view(model: &Model) -> impl IntoNodes<Msg> {
     div![
-        class![
-            C.bg_purple_600,
-            C.flex,
-            C.flex_col,
-            C.h_screen,
-            C.text_gray_900,
-        ],
+        C!["bg-purple-600 h-screen text-gray-900"],
         div![
-            class![C.flex, C.justify_between,],
+            C!["grid grid-cols-2 "],
             div![
-                class![C.flex,],
+                C!["justify-self-start"],
                 h1![
-                    class![
-                        C.font_bold,
-                        C.px_4,
-                        C.py_2,
-                        C.text_white,
-                        C.text_2xl,
-                        C.tracking_wider,
-                    ],
+                    C!["font-bold px-4 py-2 text-white text-2xl tracking-wider"],
                     "Html to Seed",
                 ],
             ],
             github_button()
         ],
         div![
-            class![C.flex, C.h_full, C.mb_3,],
+            C!["grid grid-cols-2 h-full mb-3"],
             div![
-                class![C.flex, C.flex_col, C.ml_3, C.w_1of2,],
+                C!["ml-3 w-1of2"],
                 div![
-                    class![
-                        C.relative,
-                        C.bg_gray_200,
-                        C.py_2,
-                        C.rounded_t_lg,
-                        C.text_center,
-                    ],
+                    C!["relative bg-slate-100 py-2 rounded-t-lg text-center"],
                     sample_menu(),
                     div![
-                        class![C.w_full,],
-                        p![
-                            class![C.py_2, C.text_sm,],
-                            "Type or paste HTML fragment",
-                        ],
+                        C!["full"],
+                        p![C!["py-2 text-sm"], "Type or paste HTML fragment",],
                     ],
                 ],
                 textarea![
-                    class![
-                        C.border,
-                        C.font_mono,
-                        C.h_full,
-                        C.leading_tight,
-                        C.text_sm,
-                    ],
+                    C!["border font-mono h-full w-full leading-tight text-sm"],
                     attrs! { At::SpellCheck => "false", },
                     input_ev(Ev::Input, Msg::HtmlChanged),
-                    model.html,
+                    &model.html,
                 ],
             ],
             div![
-                class![C.flex, C.flex_col, C.ml_3, C.mr_3, C.w_1of2,],
+                C!["ml-3 mr-3 w-1of2"],
                 div![
-                    class![C.bg_gray_200, C.flex, C.py_2, C.rounded_t_lg,],
-                    div![
-                        class![C.absolute, C.flex, C.ml_3, C.my_1,],
-                        use_typed_classes_button(model.use_typed_classes),
-                        copy_button(model.is_copy_supported),
-                    ],
+                    C!["bg-slate-100 flex py-2 rounded-t-lg"],
+                    use_typed_classes_button(model.use_typed_classes),
+                    copy_button(model.is_copy_supported),
                     p![
-                        class![C.py_2, C.text_center, C.text_sm, C.w_full,],
+                        C!["py-2 text-center text-sm w-full"],
                         "Rust code compatible with Seed",
                     ],
                 ],
                 textarea![
-                    class![
-                        C.border,
-                        C.font_mono,
-                        C.h_full,
-                        C.leading_tight,
-                        C.text_sm,
-                    ],
+                    C!["border font-mono h-full w-full leading-tight text-sm"],
                     attrs! {
                         At::Id => "rustcode",
                         At::SpellCheck => "false",
                     },
-                    model.rust,
+                    &model.rust,
                 ],
             ],
         ],
@@ -163,19 +122,18 @@ pub fn view(model: &Model) -> impl View<Msg> {
 
 fn copy_button(is_copy_supported: bool) -> Node<Msg> {
     button![
-        class![
-            C.border, C.border_gray_800, C.flex, C.hover__bg_gray_900, C.hover__text_white, C.ml_3, C.p_1, C.rounded, C.text_sm,
-            C.invisible => !is_copy_supported
+        C!["border border-gray-800 flex hover:bg-gray-900 hover:text-white ml-3 p-1 rounded text-sm",
+            IF!(!is_copy_supported => "invisible")
         ],
         copy_icon(),
-        simple_ev(Ev::Click, Msg::CopyToClipboard),
-        p![class! [ C.ml_1, C.mr_1 C.self_center, ], "Copy",],
+        ev(Ev::Click, |_| Msg::CopyToClipboard),
+        p![C!["ml-1 mr-1 self-center"], "Copy",],
     ]
 }
 
 fn copy_icon() -> Node<Msg> {
     svg![
-        class![C.fill_current, C.h_4, C.ml_1, C.self_center, C.w_4,],
+        C!["fill-current h-4 ml-1 self-center w-4"],
         attrs! {
             At::ViewBox => "0 0 20 20",
         },
@@ -187,29 +145,16 @@ fn copy_icon() -> Node<Msg> {
 
 fn github_button() -> Node<Msg> {
     a![
-        class![
-            C.border,
-            C.border_white,
-            C.flex,
-            C.hover__bg_gray_800,
-            C.hover__border_gray_800,
-            C.items_center,
-            C.mr_3,
-            C.my_3,
-            C.px_3,
-            C.rounded,
-            C.text_white,
-            C.text_xs,
-        ],
+        C!["justify-self-end border border-white flex hover:bg-gray-800 hover:border-gray-800 items-center mr-3 my-3 px-3 rounded text-white text-xs"],
         attrs! {
             At::Href => "http://github.com/phillipbaird/html-to-seed",
             At::Target => "_blank",
             At::Rel => "noreferrer",
         },
         img![
-            class! [ C.w_3 C.h_3, C.mr_1, ],
+            C! ["w-3 h-3 mr-1"],
             attrs! {
-                    At::Src => "../static/images/GitHub-Mark-Light-120px-plus.png",
+                    At::Src => "./images/GitHub-Mark-Light-120px-plus.png",
                     At::Alt => "Github logo",
             },
         ],
@@ -219,22 +164,12 @@ fn github_button() -> Node<Msg> {
 
 fn sample_menu() -> Node<Msg> {
     nav![
-        class![C.group, C.ml_2, C.relative,],
+        C!["group ml-2 relative"],
         div![
-            class![
-                C.absolute,
-                C.cursor_pointer,
-                C.flex,
-                C.items_center,
-                C.left_0,
-                C.pl_4,
-                C.py_2,
-                C.text_sm,
-                C.tracking_wider,
-            ],
+            C!["absolute cursor-pointer flex items-center left-0 pl-4 py-2 text-sm tracking-wider"],
             "Samples",
             svg![
-                class![C.fill_current, C.h_4, C.w_4,],
+                C!["fill-current h-4 w-4"],
                 attrs! {
                     At::ViewBox => "0 0 20 20",
                 },
@@ -244,18 +179,7 @@ fn sample_menu() -> Node<Msg> {
             ],
         ],
         ul![
-            class![
-                C.absolute,
-                C.bg_white,
-                C.group_hover__visible,
-                C.invisible,
-                C.items_center,
-                C.mt_8,
-                C.overflow_hidden,
-                C.rounded_lg,
-                C.shadow_lg,
-                C.w_48,
-            ],
+            C!["absolute bg-white group-hover:visible invisible items-center mt-8 overflow-hidden rounded-lg shadow-md w-48"],
             sample_menu_item(samples::HELLO_WORLD, samples::HELLO_WORLD_HTML),
             sample_menu_item(
                 samples::BOOTSTRAP_NAVBAR,
@@ -268,41 +192,33 @@ fn sample_menu() -> Node<Msg> {
 }
 
 fn sample_menu_item(label: &str, html: &str) -> Node<Msg> {
+    let html_string = html.to_string();
     li![button![
-        class![
-            C.px_4,
-            C.py_2,
-            C.block,
-            C.hover__text_white,
-            C.hover__bg_gray_800,
-            C.text_sm,
-            C.w_full,
-        ],
-        simple_ev(Ev::Click, Msg::HtmlChanged(html.to_string())),
+        C!["px-4 py-2 block hover:text-white hover:bg-gray-800 text-sm, w-full"],
+        ev(Ev::Click, |_| Msg::HtmlChanged(html_string)),
         label,
     ],]
 }
 
 fn use_typed_classes_button(use_typed_classes: bool) -> Node<Msg> {
     button![
-        class![
-            C.border, C.border_gray_800, C.flex, C.hover__bg_gray_900, C.hover__text_white, C.p_1, C.rounded, C.text_sm,
-            C.bg_purple_700 => use_typed_classes,
-            C.text_white => use_typed_classes,
+        C!["min-w-fit border border-gray-800 flex hover:bg-gray-900 hover:text-white ml-2 p-1 rounded text-sm",
+           IF!(use_typed_classes => "bg-purple-700"),
+           IF!(use_typed_classes => "text-white"),
         ],
-        simple_ev(Ev::Click, Msg::ToggleUseTypedClasses),
+        ev(Ev::Click, |_| Msg::ToggleUseTypedClasses),
         if use_typed_classes {
             check_mark_icon()
         } else {
             cross_icon()
         },
-        p![class![C.ml_1, C.mr_1, C.self_center,], "Typed Classes",],
+        p![C!["ml-1 mr-1 self-center"], "Typed Classes",],
     ]
 }
 
 fn check_mark_icon() -> Node<Msg> {
     svg![
-        class![C.fill_current, C.h_4, C.ml_1, C.self_center, C.w_4,],
+        C!["fill-current h-4 ml-1 self-center w-4"],
         attrs! {
             At::ViewBox => "0 0 20 20",
         },
@@ -314,7 +230,7 @@ fn check_mark_icon() -> Node<Msg> {
 
 fn cross_icon() -> Node<Msg> {
     svg![
-        class![C.fill_current, C.h_4, C.ml_1, C.self_center, C.w_4,],
+        C!["fill-current h-4 ml-1 self-center w-4"],
         attrs! {
             At::ViewBox => "0 0 20 20",
         },
@@ -351,4 +267,12 @@ fn rust_text_area() -> HtmlTextAreaElement {
         .expect("Could not find textarea with id #rustcode.");
     area.dyn_into::<HtmlTextAreaElement>()
         .expect("Failed to convert Element to HtmlTextAreaElement.")
+}
+
+// ------ ------
+//     Start
+// ------ ------
+
+fn main() {
+    App::start("app", init, update, view);
 }

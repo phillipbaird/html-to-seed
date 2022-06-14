@@ -1,0 +1,41 @@
+name: Rust
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 14
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14"
+      - name: Use latest stable release
+        run: rustup update stable
+      - name: Add support for WASM to rust toolchain.
+        run: rustup target add wasm32-unknown-unknown
+      - name: Install Trunk
+        run: cargo install trunk
+      - name: Build
+        run: cargo build --release
+      - name: Run tests
+        run: cargo test --verbose
+      - name: Build WebApp
+        run: |
+          cd html-to-seed-web
+          npm ci
+          trunk build --release
+      - name: Deploy Site
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: npx netlify deploy --dir=../dist --prod

@@ -1,0 +1,11 @@
+{
+    "author": "Phillip Baird <phillip.baird@gmail.com>",
+    "name": "html-to-seed-web",
+    "version": "0.2.0",
+    "repository": "",
+    "license": "MIT",
+    "devDependencies": {
+        "netlify-cli": "^8.14.1",
+        "tailwindcss": "^3.1.0"
+    }
+}
